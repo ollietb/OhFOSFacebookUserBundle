@@ -1,0 +1,18 @@
+fos_facebook:
+    file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
+    alias:  facebook
+    app_id: %facebook_app_id%
+    secret: %facebook_app_secret%
+    cookie: true
+    permissions: [email]
+
+fos_user:
+    db_driver:          orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name:      public
+    user_class:         Oh\FOSFacebookUserBundle\Entity\User
+    from_email:
+        address:        me@example.com
+        sender_name:    Example
+    registration:
+        confirmation:
+            enabled:    true

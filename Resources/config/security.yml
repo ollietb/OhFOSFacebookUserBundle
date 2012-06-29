@@ -1,0 +1,59 @@
+jms_security_extra:
+    secure_all_services: false
+    expressions: true
+
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        chain_provider:
+            chain:
+                providers: [fos_userbundle, my_fos_facebook_provider]
+        fos_userbundle:
+            id: fos_user.user_manager
+        my_fos_facebook_provider:
+            id: my.facebook.user
+            
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+            
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        public:
+            # since anonymous is allowed users will not be forced to login
+            pattern:   ^/.*
+            fos_facebook:
+                app_url: "http://apps.facebook.com/eventstagram/"
+                server_url: "http://eventstagram.localhost/app_dev.php"
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                default_target_path: /
+                provider: my_fos_facebook_provider
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                provider: fos_userbundle
+            anonymous: true
+            logout:
+                handlers: ["fos_facebook.logout_handler"]
+                
+        login:
+            pattern:  ^/login$
+            security: false
+
+    access_control:
+        - { path: ^/secured/.*, role: [ROLE_FACEBOOK] } # This is the route secured with fos_facebook
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+ 
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN

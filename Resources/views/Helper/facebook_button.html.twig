@@ -1,0 +1,18 @@
+<!-- inside a twig template -->
+{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
+
+{{ facebook_login_button({'autologoutlink': true, 'label': button_text ? button_text : 'Login with Facebook' }) }}
+
+<script>
+  function goLogIn(){
+	  window.location = "{{ path('fos_user_security_check') }}";
+  }
+
+  function onFbInit() {
+	  if (typeof(FB) != 'undefined' && FB != null ) {
+		  FB.Event.subscribe('auth.statusChange', function(response) {
+			  setTimeout(goLogIn, 500);
+		  });
+	  }
+  }
+</script>	  

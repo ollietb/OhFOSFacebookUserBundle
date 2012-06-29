@@ -1,0 +1,13 @@
+services:
+    my.facebook.user:
+        class: Oh\FOSFacebookUserBundle\Security\User\Provider\FacebookProvider
+        arguments:
+            facebook: "@fos_facebook.api"
+            userManager: "@fos_user.user_manager"
+            validator: "@validator"
+            container: "@service_container"
+    fos_user.registration.form.type:
+        class: Oh\FOSFacebookUserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: fos_user_registration }

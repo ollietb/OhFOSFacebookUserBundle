@@ -1,0 +1,10 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+		<a href="{{ path('fos_user_security_logout') }}">logout</a> 
+		<a href="{{ path('fos_user_profile_show') }}">profile</a> 
+		<a href="{{ path('fos_user_profile_edit') }}">edit profile</a> 
+		<a href="{{ path('fos_user_change_password') }}">change password</a> 
+{% endif %}
+{% endblock %}
