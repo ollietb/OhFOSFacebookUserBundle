@@ -8,8 +8,10 @@ _security_logout:
 _facebook_secured:
     pattern: /secured/
     defaults: { _controller: OhFOSFacebookUserBundle:Secured:index }
-    
-    
+fos_facebook_security_check:
+    pattern: /fb/login_check
+    defaults: { _controller: OhFOSFacebookUserBundle:Default:fbLoginCheck }   
+	
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
